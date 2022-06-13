@@ -1,20 +1,16 @@
 package com.yunsung.coroutine
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yunsung.coroutine.data.remote.artgallery.ArtGalleryDataSource
-import com.yunsung.coroutine.data.remote.artgallery.model.ArtGallery
-import com.yunsung.coroutine.data.remote.artgallery.model.MsmArtGlrBaseInfo
+import com.yunsung.coroutine.artdata.remote.artgallery.ArtGalleryDataSource
+import com.yunsung.coroutine.artdata.remote.artgallery.model.MsmArtGlrBaseInfo
 import com.yunsung.coroutine.util.NetWorkResult
-import com.yunsung.coroutine.util.Utils.QUERY_API_KEY
 import com.yunsung.coroutine.util.Utils.QUERY_NUM_OF_ROWS
 import com.yunsung.coroutine.util.Utils.QUERY_OPERATION_RULE_NUM
 import com.yunsung.coroutine.util.Utils.QUERY_PAGE_NO
 import com.yunsung.coroutine.util.Utils.QUERY_TYPE
-import com.yunsung.coroutine.util.Utils.apiKey
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,7 +30,7 @@ class ArtGalleryViewModel @Inject constructor(
         val queries = HashMap<String, String>()
 
         //queries[QUERY_API_KEY] = apiKey
-        queries[QUERY_NUM_OF_ROWS] = "14"
+        queries[QUERY_NUM_OF_ROWS] = "20"
         queries[QUERY_PAGE_NO] = "1"
         queries[QUERY_TYPE] = "json"
         queries[QUERY_OPERATION_RULE_NUM] = "공립"
@@ -44,11 +40,11 @@ class ArtGalleryViewModel @Inject constructor(
             val response = artGalleryDataSource.getArtGallery(queries)
 
             if (response.isSuccessful && response.body() != null) {
-                val schoolResponse = response.body()!!
-                val header = schoolResponse.header
+                val artGalleryResponse = response.body()!!
+                val header = artGalleryResponse.header
 
                 if (header.resultCode == "00")
-                    NetWorkResult.Success(schoolResponse.msmArtGlrBaseInfo)
+                    NetWorkResult.Success(artGalleryResponse.msmArtGlrBaseInfo)
                 else {
                     val errorString = "${header.resultCode}: ${header.resultMsg}"
                     NetWorkResult.Error(errorString)

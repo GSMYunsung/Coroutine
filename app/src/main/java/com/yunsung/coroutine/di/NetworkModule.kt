@@ -1,6 +1,6 @@
 package com.yunsung.coroutine.di
 
-import com.yunsung.coroutine.data.remote.artgallery.ArtGalleryService
+import com.yunsung.coroutine.artdata.remote.artgallery.ArtGalleryService
 import com.yunsung.coroutine.util.SelfSigningHelper
 import com.yunsung.coroutine.util.Utils.BASE_URL
 import dagger.Module
