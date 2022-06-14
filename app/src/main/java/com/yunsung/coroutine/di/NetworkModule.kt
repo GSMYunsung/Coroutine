@@ -2,7 +2,7 @@ package com.yunsung.coroutine.di
 
 import com.yunsung.coroutine.artdata.remote.artgallery.ArtGalleryService
 import com.yunsung.coroutine.util.SelfSigningHelper
-import com.yunsung.coroutine.util.Utils.BASE_URL
+import com.yunsung.coroutine.util.Utils.BASE_URL_ARTGALLERY
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -47,7 +47,7 @@ object NetworkModule {
         gsonConverterFactory: GsonConverterFactory
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BASE_URL_ARTGALLERY)
             .client(okHttpClient)
             .addConverterFactory(gsonConverterFactory)
             .build()
