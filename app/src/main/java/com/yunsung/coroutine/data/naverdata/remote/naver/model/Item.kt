@@ -1,4 +1,4 @@
-package com.yunsung.coroutine.naverdata.remote.naver.model
+package com.yunsung.coroutine.data.naverdata.remote.naver.model
 
 
 import com.google.gson.annotations.SerializedName

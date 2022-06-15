@@ -1,6 +1,6 @@
-package com.yunsung.coroutine.artdata.remote.artgallery
+package com.yunsung.coroutine.data.artdata.remote.artgallery
 
-import com.yunsung.coroutine.artdata.remote.artgallery.model.ArtGallery
+import com.yunsung.coroutine.data.artdata.remote.artgallery.model.ArtGallery
 import retrofit2.Response
 import retrofit2.http.*
 

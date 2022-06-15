@@ -1,8 +1,8 @@
-package com.yunsung.coroutine.naverdata.remote.naver
+package com.yunsung.coroutine.data.naverdata.remote.naver
 
-import com.yunsung.coroutine.naverdata.remote.naver.model.naverSearch
+import com.yunsung.coroutine.data.naverdata.remote.naver.model.naverSearch
+import com.yunsung.coroutine.util.Utils
 import retrofit2.Response
-import retrofit2.http.QueryMap
 import javax.inject.Inject
 
 class NaverSearchDataSource @Inject constructor(
@@ -10,6 +10,6 @@ class NaverSearchDataSource @Inject constructor(
 ) {
 
     suspend fun getNaverSearchData(headerQuery : HashMap<String,String>,query : HashMap<String,String>) : Response<naverSearch> =
-        naverSearchApi.getNaverSearchData(headerQuery,query)
+        naverSearchApi.getNaverSearchData(headerQuery, query)
 
 }

@@ -1,4 +1,4 @@
-package com.yunsung.coroutine.artdata.remote.artgallery.model
+package com.yunsung.coroutine.data.artdata.remote.artgallery.model
 
 
 import com.google.gson.annotations.SerializedName

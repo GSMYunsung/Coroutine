@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yunsung.coroutine.artdata.remote.artgallery.ArtGalleryDataSource
-import com.yunsung.coroutine.artdata.remote.artgallery.model.MsmArtGlrBaseInfo
+import com.yunsung.coroutine.data.artdata.remote.artgallery.ArtGalleryDataSource
+import com.yunsung.coroutine.data.artdata.remote.artgallery.model.MsmArtGlrBaseInfo
 import com.yunsung.coroutine.util.NetWorkResult
 import com.yunsung.coroutine.util.Utils.QUERY_NUM_OF_ROWS
 import com.yunsung.coroutine.util.Utils.QUERY_OPERATION_RULE_NUM
