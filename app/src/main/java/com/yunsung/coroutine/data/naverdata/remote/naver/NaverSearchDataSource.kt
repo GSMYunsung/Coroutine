@@ -1,7 +1,6 @@
 package com.yunsung.coroutine.data.naverdata.remote.naver
 
 import com.yunsung.coroutine.data.naverdata.remote.naver.model.naverSearch
-import com.yunsung.coroutine.util.Utils
 import retrofit2.Response
 import javax.inject.Inject
 

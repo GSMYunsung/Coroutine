@@ -1,13 +1,10 @@
 package com.yunsung.coroutine.data.naverdata.remote.naver
 
 import com.yunsung.coroutine.data.naverdata.remote.naver.model.naverSearch
-import com.yunsung.coroutine.util.Utils
-import com.yunsung.coroutine.util.Utils.HEADER_CLIENT_ID
-import com.yunsung.coroutine.util.Utils.HEADER_CLIENT_SECRET
-import com.yunsung.coroutine.util.Utils.clientID
-import com.yunsung.coroutine.util.Utils.clientSecret
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.GET
+import retrofit2.http.HeaderMap
+import retrofit2.http.QueryMap
 
 interface NaverSearchService {
 
