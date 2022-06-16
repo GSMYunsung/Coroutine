@@ -1,8 +1,10 @@
 package com.yunsung.coroutine.di
 
-import com.yunsung.coroutine.artdata.remote.artgallery.ArtGalleryService
+import com.yunsung.coroutine.data.artdata.remote.artgallery.ArtGalleryService
+import com.yunsung.coroutine.data.naverdata.remote.naver.NaverSearchService
 import com.yunsung.coroutine.util.SelfSigningHelper
 import com.yunsung.coroutine.util.Utils.BASE_URL_ARTGALLERY
+import com.yunsung.coroutine.util.Utils.BASE_URL_NAVERDEARCH
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,10 +29,10 @@ object NetworkModule {
             .connectTimeout(10, TimeUnit.SECONDS)
             .writeTimeout(15, TimeUnit.SECONDS)
             .addInterceptor(getLoggingInterceptor())
-            .sslSocketFactory(
-                selfSigningHelper.sslContext.socketFactory,
-                selfSigningHelper.tmf.trustManagers[0] as X509TrustManager
-            )
+//            .sslSocketFactory(
+//                selfSigningHelper.sslContext.socketFactory,
+//                selfSigningHelper.tmf.trustManagers[0] as X509TrustManager
+//            )
             .build()
     }
 
@@ -47,7 +49,7 @@ object NetworkModule {
         gsonConverterFactory: GsonConverterFactory
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL_ARTGALLERY)
+            .baseUrl(BASE_URL_NAVERDEARCH)
             .client(okHttpClient)
             .addConverterFactory(gsonConverterFactory)
             .build()
@@ -56,9 +58,16 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideGiphyApiService(retrofit: Retrofit): ArtGalleryService {
+    fun provideArtGalleryApiService(retrofit: Retrofit): ArtGalleryService {
         return retrofit.create(ArtGalleryService::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideNaverApiService(retrofit: Retrofit): NaverSearchService {
+        return retrofit.create(NaverSearchService::class.java)
+    }
+
 
     private fun getLoggingInterceptor(): HttpLoggingInterceptor =
         HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
