@@ -10,6 +10,8 @@ import com.yunsung.coroutine.data.naverdata.remote.naver.model.Item
 import com.yunsung.coroutine.util.NetWorkResult
 import com.yunsung.coroutine.util.Utils
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,24 +23,39 @@ class NaverSearchViewModel @Inject constructor(
     private val _naverSearchDataList = MutableLiveData<NetWorkResult<List<Item>>>()
     val naverSearchDataList : LiveData<NetWorkResult<List<Item>>> get() =_naverSearchDataList
 
-    fun getNaverSearchData() = viewModelScope.launch {
+    val searchQuery = MutableStateFlow("")
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val searchQueryResult = searchQuery
+        .debounce(500)
+        .filter { it.isNotEmpty() }
+        .distinctUntilChanged()
+        .flatMapLatest { keyword ->
+            flow{
+                getNaverSearchData(keyword)
+                emit(keyword)
+            }
+        }
+
+
+
+    fun getNaverSearchData(searchKeyword : String) = viewModelScope.launch {
 
         _naverSearchDataList.value = NetWorkResult.Loading()
 
         val queries = HashMap<String,String>()
 
-        queries[Utils.Query_QUERY] = "김치"
+        queries[Utils.Query_QUERY] = searchKeyword
         queries[Utils.QUERY_DISPLAY] = "10"
         queries[Utils.QUERY_START] = "1"
         queries[Utils.QUERY_SORT] = "sim"
 
         val headerQueries = HashMap<String,String>()
 
-//        queries[Utils.HEADER_CLIENT_ID] = Utils.clientID
-//        queries[Utils.HEADER_CLIENT_SECRET] = Utils.clientSecret
-
         headerQueries[Utils.HEADER_CLIENT_ID] = Utils.clientID
         headerQueries[Utils.HEADER_CLIENT_SECRET] = Utils.clientSecret
+
+
             _naverSearchDataList.value = try {
 
                 val response = naverSearchDataSource.getNaverSearchData(headerQuery = headerQueries, query = queries)
