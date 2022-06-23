@@ -1,6 +1,5 @@
-package com.yunsung.coroutine
+package com.yunsung.coroutine.ui.news
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

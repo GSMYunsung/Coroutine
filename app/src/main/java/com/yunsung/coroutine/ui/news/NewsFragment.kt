@@ -1,26 +1,25 @@
-package com.yunsung.coroutine
+package com.yunsung.coroutine.ui.news
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.util.Log
 import android.widget.SearchView
-import androidx.activity.viewModels
-import androidx.lifecycle.LifecycleOwner
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.yunsung.coroutine.base.BaseActivity
-import com.yunsung.coroutine.databinding.ActivityMainBinding
+import com.yunsung.coroutine.R
+import com.yunsung.coroutine.base.BaseFragment
+import com.yunsung.coroutine.databinding.FragmentNewsBinding
 import com.yunsung.coroutine.util.NetWorkResult
 import com.yunsung.coroutine.util.extension.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main){
+class NewsFragment : BaseFragment<FragmentNewsBinding>(R.layout.fragment_news) {
 
     private val naverSearchViewModel : NaverSearchViewModel by viewModels()
     private val naverSearchAdapter by lazy { NaverSearchAdapter() }
 
     override fun init() {
+
 
         binding.naverSearchRecyclerView.adapter = naverSearchAdapter
 
@@ -33,7 +32,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main){
 
                     naverSearchAdapter.setData(response.data!!)
 
-                    showToast("데이터 호출 성공!")
+                    requireActivity().showToast("데이터 호출 성공!")
+
                 }
                 is NetWorkResult.Error -> {
                     Log.d("Error", "schoolList: ${response.message}")
@@ -55,21 +55,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main){
         with(binding){
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
 
-                override fun onQueryTextSubmit(p0: String?): Boolean {
-
-                        return false
-                }
+                override fun onQueryTextSubmit(p0: String?): Boolean =  false
 
                 override fun onQueryTextChange(liveText: String): Boolean {
 
-                        naverSearchViewModel.searchQuery.value = liveText
+                    naverSearchViewModel.searchQuery.value = liveText
 
-                        return false
+                    return false
                 }
-
             })
         }
 
     }
-
 }
