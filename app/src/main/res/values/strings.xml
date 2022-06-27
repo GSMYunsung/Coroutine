@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Coroutine</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_menu">News</string>
+    <string name="favorites_menu">Favorites</string>
 </resources>
