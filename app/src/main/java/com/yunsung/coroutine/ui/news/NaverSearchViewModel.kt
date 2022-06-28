@@ -1,9 +1,12 @@
 package com.yunsung.coroutine.ui.news
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yunsung.coroutine.data.naverdata.local.NaverRepository
+import com.yunsung.coroutine.data.naverdata.local.naverNewsEntity
 import com.yunsung.coroutine.data.naverdata.remote.naver.NaverSearchDataSource
 import com.yunsung.coroutine.data.naverdata.remote.naver.model.Item
 import com.yunsung.coroutine.util.NetWorkResult
@@ -15,12 +18,19 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
+
+// 연결
+
 class NaverSearchViewModel @Inject constructor(
-    private val naverSearchDataSource : NaverSearchDataSource
+    private val naverSearchDataSource : NaverSearchDataSource,
+    private val naverRepository: NaverRepository
 ) : ViewModel() {
 
     private val _naverSearchDataList = MutableLiveData<NetWorkResult<List<Item>>>()
     val naverSearchDataList : LiveData<NetWorkResult<List<Item>>> get() =_naverSearchDataList
+
+    private val _naverRoomData = MutableLiveData<List<Item>>()
+    val naverRoomData : LiveData<List<Item>> get() =_naverRoomData
 
     val searchQuery = MutableStateFlow("")
 
@@ -31,10 +41,27 @@ class NaverSearchViewModel @Inject constructor(
         .distinctUntilChanged()
         .flatMapLatest { keyword ->
             flow{
-                getNaverSearchData(keyword)
+                getNaverNews(keyword)
                 emit(keyword)
             }
         }
+
+    fun getNaverNews(keyword : String){
+
+        viewModelScope.launch {
+
+            val naverEntity : List<naverNewsEntity> = naverRepository.getNaver(keyword) ?: return@launch
+
+            Log.d("cocopam12535",naverEntity.toString())
+
+//            _naverRoomData.value = List<Item>(
+//                naverEntity.naverNewsTitle,
+//                naverEntity.naverNewsContent,
+//                naverEntity.naverLink,
+//            )
+        }
+
+    }
 
 
 
