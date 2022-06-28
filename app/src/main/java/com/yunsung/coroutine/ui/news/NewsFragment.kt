@@ -20,37 +20,48 @@ class NewsFragment : BaseFragment<FragmentNewsBinding>(R.layout.fragment_news) {
 
     override fun init() {
 
-
         binding.naverSearchRecyclerView.adapter = naverSearchAdapter
 
-        naverSearchViewModel.naverSearchDataList.observe(this){
-                response ->
-
-            when(response){
-                is NetWorkResult.Success -> {
-                    Log.d("TAG", "schoolList: ${response.data}")
-
-                    naverSearchAdapter.setData(response.data!!)
-
-                    requireActivity().showToast("데이터 호출 성공!")
-
-                }
-                is NetWorkResult.Error -> {
-                    Log.d("Error", "schoolList: ${response.message}")
-                }
-                is NetWorkResult.Loading -> {
-                    Log.d("TAG", "schoolList: Loading")
-                }
-            }
-        }
+//        naverSearchViewModel.naverSearchDataList.observe(this){
+//                response ->
+//
+//            when(response){
+//                is NetWorkResult.Success -> {
+//                    Log.d("TAG", "schoolList: ${response.data}")
+//
+//                    naverSearchAdapter.setData(response.data!!)
+//
+//                    naverSearchViewModel.getNaverNews(naverSearchViewModel.searchQuery.value)
+//
+//                    requireActivity().showToast("데이터 호출 성공!")
+//
+//                }
+//                is NetWorkResult.Error -> {
+//                    Log.d("Error", "schoolList: ${response.message}")
+//                }
+//                is NetWorkResult.Loading -> {
+//                    Log.d("TAG", "schoolList: Loading")
+//                }
+//            }
+//        }
 
         // flow 는 emit 으로 구독을하고 collect 로 해당값의 변화를 확인한다.
 
         lifecycleScope.launch {
-            naverSearchViewModel.searchQueryResult.collect {
-                Log.d("TAG", "init: $it")
+            naverSearchViewModel.searchQueryResult.collect { keyword ->
+                Log.d("TAG", "init: $keyword")
+
+                naverSearchViewModel.getNaverNews(keyword)
+
             }
         }
+
+//        naverSearchViewModel.naverRoomData.observe(this){
+//            local ->
+//
+//            naverSearchAdapter.setData(local)
+//
+//        }
 
         with(binding){
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
