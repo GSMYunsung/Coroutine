@@ -9,5 +9,5 @@ class NaverLocalDataSource @Inject constructor(
 
     suspend fun deleteMeal(naverNewsEntity: naverNewsEntity) = naverDao.deleteNews(naverNewsEntity)
 
-    suspend fun getNaver(naverNewsTitle : String, naverNewsContent : String, naverNewsUrl : String) = naverDao.getNews(naverNewsTitle, naverNewsContent, naverNewsUrl)
+    suspend fun getNaver(keyword : String) : List<naverNewsEntity> = naverDao.getNews(keyword)
 }

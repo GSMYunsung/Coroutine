@@ -11,12 +11,12 @@ class NaverRepository @Inject constructor(
     private val local : NaverLocalDataSource
 ) {
 
-    suspend fun getNaver(item : Item,searchKeyword : String) : naverNewsEntity?{
+    suspend fun getNaver(searchKeyword: String) : List<naverNewsEntity>? {
 
-        val localNaverResult = local.getNaver(
-            naverNewsTitle = item.title,
-            naverNewsContent = item.description,
-            naverNewsUrl = item.link)
+        val localNaverResult : List<naverNewsEntity> = local.getNaver(
+            keyword = searchKeyword)
+
+        Log.d("localNaverResult",localNaverResult.toString())
 
         return if(localNaverResult == null){
             requestAndSaveNaver(searchKeyword)
@@ -26,7 +26,7 @@ class NaverRepository @Inject constructor(
         }
     }
 
-    private suspend fun requestAndSaveNaver(searchKeyword : String): naverNewsEntity? {
+    private suspend fun requestAndSaveNaver(searchKeyword : String): List<naverNewsEntity>? {
 
         val queries = HashMap<String,String>()
 
@@ -45,12 +45,17 @@ class NaverRepository @Inject constructor(
             val response = remote.getNaverSearchData(headerQueries,queries)
 
             if(response.isSuccessful && response.body() != null){
-                val naverEntity = naverNewsEntity(
-                    naverNewsTitle = response.body()!!.items[0].title,
-                    naverNewsContent = response.body()!!.items[0].description,
-                    naverLink = response.body()!!.items[0].link)
 
-                local.insertNaver(naverEntity)
+                for(index in 0 until response.body()!!.items.size)
+                {
+                    val naverEntity = naverNewsEntity(
+                        naverNewsTitle = response.body()!!.items[index].title,
+                        naverNewsContent = response.body()!!.items[index].description,
+                        naverLink = response.body()!!.items[index].link,
+                        keyWord = searchKeyword)
+
+                    local.insertNaver(naverEntity)
+                }
             }
             else{
                 Log.d("NoResult", "requestAndSaveMeal: 저장 실패: ${response.message()}")

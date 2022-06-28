@@ -5,6 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class naverNewsEntity(
+    var keyWord : String,
     var naverNewsTitle : String,
     var naverNewsContent : String,
     var naverLink : String
